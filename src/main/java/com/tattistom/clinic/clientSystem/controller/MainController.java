@@ -5,12 +5,12 @@ import com.tattistom.clinic.clientSystem.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
+@CrossOrigin("http://localhost:3000")
 public class MainController {
 
     @Autowired
@@ -22,22 +22,25 @@ public class MainController {
 
 
     @GetMapping("/patients")
-    public String patientTable(Model model){
-
-
+    public List<Patient> patientTable(){
 
         List<Patient> patients = service.getPatientList();
-
-        model.addAttribute("patients", patients);
-
-        return "patients";
+        return patients;
     }
+
+//    public String patientTable(Model model){
+//        List<Patient> patients = service.getPatientList();
+//
+//        model.addAttribute("patients", patients);
+//        return "patients";
+//    }
+
+
 
 
     @PostMapping("/patients")
-    public String addPatient(Patient patient){
-        service.addPatient(patient);
-        return ("redirect:/patients");
+    public Patient newPatient(@RequestBody Patient newPatient){
+        return service.addPatient(newPatient);
     }
 
 }
